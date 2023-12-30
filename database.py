@@ -121,7 +121,10 @@ class Database:
             rows = self.connection.execute(GET_RECIPE_INGREDIENTS, (recipe_id,)).fetchall()
             return [Ingredient(row[0], row[1]) for row in rows]
 
-
+    # Recipe ingredients methods:
+    def add_recipe_ingredients(self, recipe_id, ingredient_ids):
+        with self.connection:
+            self.connection.executemany(INSERT_RECIPE_INGREDIENT, [(recipe_id, ingredient_id) for ingredient_id in ingredient_ids])
 
 
 

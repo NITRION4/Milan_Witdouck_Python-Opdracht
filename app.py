@@ -26,7 +26,7 @@ Your choice: """
 def menu():
     app = IngredientRecipeApp()
 
-    while (user_input := input(MENU)) != "9":
+    while (user_input := input(MENU)) != "8":
         if user_input == "1":
             app.add_ingredient()
         elif user_input == "2":
@@ -53,7 +53,7 @@ class IngredientRecipeApp:
 
     # Ingredient methods
     def add_ingredient(self):
-        name = input("Ingredient name: ").lower()
+        name = input("Ingredient name: ")
         ingredient = self.connection.add_ingredient(name)
         print(f"You successfully added this ingredient: {ingredient}")
 
@@ -74,7 +74,7 @@ class IngredientRecipeApp:
 
     # Recipe methods
     def add_recipe(self):
-        name = input("Recipe name: ").lower()
+        name = input("Recipe name: ")
         method = input("The method how to make this recipe: ")
         rating = int(input("Give this recipe a score from 0-100: "))
 
@@ -88,32 +88,33 @@ class IngredientRecipeApp:
                 print(f"Ingredient '{ingredient_name}' doesn't exist. Add it first.")
 
         recipe = self.connection.add_recipe(name, method, rating, ingredients)
+        self.connection.add_recipe_ingredients(recipe.recipe_id, ingredients)
         print(f"You successfully added this recipe: {recipe}")
 
     def see_all_recipes(self):
         recipes = self.connection.get_all_recipes()
         for recipe in recipes:
-            print(recipe)
+            print(f"Id: {recipe.recipe_id}, Name: {recipe.name}, Method: {recipe.method}, Rating: {recipe.rating}")
 
     def find_recipe(self):
         name = input("Recipe name to find: ")
         recipe = self.connection.get_recipe_by_name(name)
         if recipe:
-            print(recipe)
+            print(f"Id: {recipe.recipe_id}, Name: {recipe.name}, Method: {recipe.method}, Rating: {recipe.rating}")
         else:
             print(f"Recipe '{name}' not found.")
 
     def find_recipe_ingredients(self):
-        name = input("Recipe name to find ingredients: ")
+        name = input("Enter recipe name to find ingredients: ")
         recipe = self.connection.get_recipe_by_name(name)
         if recipe:
             recipe_id = recipe.recipe_id
             ingredients = self.connection.get_recipe_ingredients(recipe_id)
 
-            print(f"Method for {name}: {recipe.method}"
-                  f"Ingredients for {name}:")
+            print(f"Method for {name}: {recipe.method}")
+            print(f"Ingredients for {name}:")
             for ingredient in ingredients:
-                print(ingredient.name)
+                print(ingredient)
         else:
             print(f"Recipe '{name}' not found.")
 
