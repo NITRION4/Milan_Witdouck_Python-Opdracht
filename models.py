@@ -15,6 +15,6 @@ class Recipe:
         self.ingredients = [] # List of ingredients that belong to my recipe.
 
     def __str__(self):
-        return f"Name: {self.name}, Method: {self.method}, Ingredients: " #TODO
+        return f"Name: {self.name}, Method: {self.method}, Ingredients: " #TODO alle ingredients ook afdrukken die bij deze recipe horen.
 
 
