@@ -7,11 +7,17 @@ MENU = """
 
 Please choose one of these options:
 
+* Ingredient methods *
 1) Add a new ingredient.
 2) See all ingredients.
-3) Add a new recipe.
-4) See all recipes.
-5) Exit.
+3) Find an ingredient by name.
+
+* Recipe methods *
+4) Add a new recipe.
+5) See all recipes.
+6) Find a recipe by name.
+7) Find ingredients and method for a recipe.
+8) Exit.
 
 Your choice: """
 
@@ -20,15 +26,21 @@ Your choice: """
 def menu():
     app = IngredientRecipeApp()
 
-    while (user_input := input(MENU)) != "5":
+    while (user_input := input(MENU)) != "9":
         if user_input == "1":
             app.add_ingredient()
         elif user_input == "2":
             app.see_all_ingredients()
         elif user_input == "3":
-            app.add_recipe()
+            app.find_ingredient()
         elif user_input == "4":
+            app.add_recipe()
+        elif user_input == "5":
             app.see_all_recipes()
+        elif user_input == "6":
+            app.find_recipe()
+        elif user_input == "7":
+            app.find_recipe_ingredients()
         else:
             print("Invalid input, try again.")
 
@@ -49,6 +61,16 @@ class IngredientRecipeApp:
         ingredients = self.connection.get_all_ingredients()
         for ingredient in ingredients:
             print(ingredient)
+
+    def find_ingredient(self):
+        name = input("Ingredient name to find: ")
+        ingredient = self.connection.get_ingredient_by_name(name)
+        if ingredient:
+            print(f"Successfully found this ingredient: "
+                  f"{ingredient}")
+        else:
+            print(f"Ingredient '{name}' not found.")
+
 
     # Recipe methods
     def add_recipe(self):
@@ -73,7 +95,27 @@ class IngredientRecipeApp:
         for recipe in recipes:
             print(recipe)
 
+    def find_recipe(self):
+        name = input("Recipe name to find: ")
+        recipe = self.connection.get_recipe_by_name(name)
+        if recipe:
+            print(recipe)
+        else:
+            print(f"Recipe '{name}' not found.")
 
+    def find_recipe_ingredients(self):
+        name = input("Recipe name to find ingredients: ")
+        recipe = self.connection.get_recipe_by_name(name)
+        if recipe:
+            recipe_id = recipe.recipe_id
+            ingredients = self.connection.get_recipe_ingredients(recipe_id)
+
+            print(f"Method for {name}: {recipe.method}"
+                  f"Ingredients for {name}:")
+            for ingredient in ingredients:
+                print(ingredient.name)
+        else:
+            print(f"Recipe '{name}' not found.")
 
 
 

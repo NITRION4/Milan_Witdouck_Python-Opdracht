@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS recipes (
 
 CREATE_RECIPE_INGREDIENTS_TABLE = """
 CREATE TABLE IF NOT EXISTS recipe_ingredients (
-    id INTEGER PRIMARY KEY
+    id INTEGER PRIMARY KEY,
     recipe_id INTEGER,
     ingredient_id INTEGER,
     FOREIGN KEY (recipe_id) REFERENCES recipes (id),
@@ -43,7 +43,17 @@ INSERT_RECIPE = "INSERT INTO recipes (name, method, rating) VALUES (?,?,?);"
 
 GET_ALL_RECIPES = "SELECT * FROM recipes;"
 
+GET_RECIPE_BY_NAME = "SELECT * FROM recipes WHERE name = ?;"
 
+# Recipe ingredient methods:
+INSERT_RECIPE_INGREDIENT = "INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (?,?);"
+
+GET_RECIPE_INGREDIENTS = """
+SELECT ingredients.id, ingredients.name
+FROM recipe_ingredients
+JOIN ingredients ON recipe_ingredients.ingredient_id = ingredients.id
+WHERE recipe_ingredients.recipe_id = ?;
+"""
 
 class Database:
     def __init__(self):
@@ -98,6 +108,18 @@ class Database:
         with self.connection:
             rows = self.connection.execute(GET_ALL_RECIPES).fetchall()
             return [Recipe(row[0], row[1], row[2], row[3]) for row in rows]
+
+    def get_recipe_by_name(self, name):
+        with self.connection:
+            row = self.connection.execute(GET_RECIPE_BY_NAME, (name,)).fetchone()
+            if row:
+                return Recipe(row[0], row[1], row[2], row[3])
+            return None
+
+    def get_recipe_ingredients(self, recipe_id):
+        with self.connection:
+            rows = self.connection.execute(GET_RECIPE_INGREDIENTS, (recipe_id,)).fetchall()
+            return [Ingredient(row[0], row[1]) for row in rows]
 
 
 
