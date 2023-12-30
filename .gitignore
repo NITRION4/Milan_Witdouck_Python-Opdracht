@@ -8,3 +8,7 @@ __pycache__/
 venv/
 
 data.db
+config.ini
+
+exported_IngredientRecipeApp_data.csv
+exported_IngredientRecipeApp_data.xlsx

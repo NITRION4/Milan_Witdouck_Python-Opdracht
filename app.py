@@ -19,7 +19,12 @@ Please choose one of these options:
 7) Find a recipe by name.
 8) Find ingredients and method for a recipe.
 9) Update a recipe.
-10) Exit.
+
+* Export methods *
+10) Export data to CSV.
+11) Export data to Excel.
+
+12) Exit.
 
 Your choice: """
 
@@ -28,7 +33,7 @@ Your choice: """
 def menu():
     app = IngredientRecipeApp()
 
-    while (user_input := input(MENU)) != "10":
+    while (user_input := input(MENU)) != "12":
         if user_input == "1":
             app.add_ingredient()
         elif user_input == "2":
@@ -47,6 +52,12 @@ def menu():
             app.find_recipe_ingredients()
         elif user_input == "9":
             app.update_recipe()
+        elif user_input == "10":
+            app.connection.export_to_csv("exported_IngredientRecipeApp_data.csv")
+            print("Data successfully exported to 'exported_IngredientRecipeApp_data.csv'")
+        elif user_input == "11":
+            app.connection.export_to_excel("exported_IngredientRecipeApp_data.xlsx")
+            print("Data successfully exported to 'exported_IngredientRecipeApp_data.xlsx'")
         else:
             print("Invalid input, try again.")
 
@@ -148,6 +159,8 @@ class IngredientRecipeApp:
 
         self.connection.update_recipe(recipe_id, new_name, new_method, new_rating, new_ingredients)
         print("Recipe updated successfully.")
+
+
 
 if __name__ == '__main__':
     menu()

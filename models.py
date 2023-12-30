@@ -23,4 +23,3 @@ class Recipe:
     def __str__(self):
         return f"Id: {self.recipe_id}, Name: {self.name}, Method: {self.method}, Rating: {self.rating}, Ingredients: {', '.join(str(ingredient) for ingredient in self.ingredients)}"
 
-

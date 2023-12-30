@@ -1,0 +1,4 @@
+sqlite==3.36.0
+configparser==5.0.2
+pandas==1.1.5
+openpyxl==3.0.9
