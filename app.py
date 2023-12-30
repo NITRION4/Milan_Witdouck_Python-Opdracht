@@ -11,13 +11,15 @@ Please choose one of these options:
 1) Add a new ingredient.
 2) See all ingredients.
 3) Find an ingredient by name.
+4) Update an ingredient.
 
 * Recipe methods *
-4) Add a new recipe.
-5) See all recipes.
-6) Find a recipe by name.
-7) Find ingredients and method for a recipe.
-8) Exit.
+5) Add a new recipe.
+6) See all recipes.
+7) Find a recipe by name.
+8) Find ingredients and method for a recipe.
+9) Update a recipe.
+10) Exit.
 
 Your choice: """
 
@@ -26,7 +28,7 @@ Your choice: """
 def menu():
     app = IngredientRecipeApp()
 
-    while (user_input := input(MENU)) != "8":
+    while (user_input := input(MENU)) != "10":
         if user_input == "1":
             app.add_ingredient()
         elif user_input == "2":
@@ -34,13 +36,17 @@ def menu():
         elif user_input == "3":
             app.find_ingredient()
         elif user_input == "4":
-            app.add_recipe()
+            app.update_ingredient()
         elif user_input == "5":
-            app.see_all_recipes()
+            app.add_recipe()
         elif user_input == "6":
-            app.find_recipe()
+            app.see_all_recipes()
         elif user_input == "7":
+            app.find_recipe()
+        elif user_input == "8":
             app.find_recipe_ingredients()
+        elif user_input == "9":
+            app.update_recipe()
         else:
             print("Invalid input, try again.")
 
@@ -119,6 +125,29 @@ class IngredientRecipeApp:
             print(f"Recipe '{name}' not found.")
 
 
+    def update_ingredient(self):
+        ingredient_id = input("Enter the ID of the ingredient you want to update: ")
+        new_name = input("Give a new name to the ingredient: ")
+        self.connection.update_ingredient(ingredient_id, new_name)
+        print("Ingredient updated successfully!")
+
+    def update_recipe(self):
+        recipe_id = input("Enter the ID of the recipe you want to update: ")
+        new_name = input("Give a new name to the recipe: ")
+        new_method = input("Enter the new method for the recipe: ")
+        new_rating = int(input("Enter the new rating for the recipe (0-100): "))
+
+        new_ingredients = []
+        while (input("Do you want to add an ingredient to the recipe? (y/n): ").lower()) == "y":
+            ingredient_name = input("Enter ingredient name: ")
+            ingredient = self.connection.get_ingredient_by_name(ingredient_name)
+            if ingredient:
+                new_ingredients.append(ingredient.ingredient_id)
+            else:
+                print(f"Ingredient '{ingredient_name}' not found. Please add it first.")
+
+        self.connection.update_recipe(recipe_id, new_name, new_method, new_rating, new_ingredients)
+        print("Recipe updated successfully.")
 
 if __name__ == '__main__':
     menu()

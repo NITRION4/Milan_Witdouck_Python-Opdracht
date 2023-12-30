@@ -92,6 +92,10 @@ class Database:
                 return Ingredient(row[0], row[1])
             return None
 
+    def update_ingredient(self, ingredient_id, new_name):
+        with self.connection:
+            self.connection.execute("UPDATE ingredients SET name = ? WHERE id = ?;", (new_name, ingredient_id))
+
     # Recipe methods:
     def add_recipe(self, name, method, rating, ingredients):
         with self.connection:
@@ -120,6 +124,16 @@ class Database:
         with self.connection:
             rows = self.connection.execute(GET_RECIPE_INGREDIENTS, (recipe_id,)).fetchall()
             return [Ingredient(row[0], row[1]) for row in rows]
+
+    def update_recipe(self, recipe_id, new_name, new_method, new_rating, new_ingredients):
+        with self.connection:
+            self.connection.execute("UPDATE recipes SET name = ?, method = ?, rating = ? WHERE id = ?", (new_name, new_method, new_rating, recipe_id))
+
+            # Remove links between recipe and his ingredients.
+            self.connection.execute("DELETE FROM recipe_ingredients WHERE recipe_id = ?", (recipe_id,))
+
+            # Add the new ingredients to the recipe
+            self.connection.executemany("INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (?, ?)", [(recipe_id, ingredient_id) for ingredient_id in new_ingredients])
 
     # Recipe ingredients methods:
     def add_recipe_ingredients(self, recipe_id, ingredient_ids):
