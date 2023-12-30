@@ -13,7 +13,7 @@ Please choose one of these options:
 4) See all recipes.
 5) Exit.
 
-Your choise: """
+Your choice: """
 
 
 
@@ -41,9 +41,9 @@ class IngredientRecipeApp:
 
     # Ingredient methods
     def add_ingredient(self):
-        name = input("Ingredient name: ")
+        name = input("Ingredient name: ").lower()
         ingredient = self.connection.add_ingredient(name)
-        print(f"You succesfully added this ingredient: {ingredient}")
+        print(f"You successfully added this ingredient: {ingredient}")
 
     def see_all_ingredients(self):
         ingredients = self.connection.get_all_ingredients()
@@ -52,9 +52,21 @@ class IngredientRecipeApp:
 
     # Recipe methods
     def add_recipe(self):
-        name = input("Recipe name: ")
+        name = input("Recipe name: ").lower()
         method = input("The method how to make this recipe: ")
-        #TODO tijdens het adden van een recipe, ook de bijhorende ingredients toevoegen (als deze al bestaan in de database, anders foutmelding)
+        rating = int(input("Give this recipe a score from 0-100: "))
+
+        ingredients = []
+        while (input("Do you want to add an ingredient to this recipe? (y/n): ").lower()) == "y":
+            ingredient_name = input("Enter ingredient name: ")
+            ingredient = self.connection.get_ingredient_by_name(ingredient_name)
+            if ingredient:
+                ingredients.append(ingredient.ingredient_id)
+            else:
+                print(f"Ingredient '{ingredient_name}' doesn't exist. Add it first.")
+
+        recipe = self.connection.add_recipe(name, method, rating, ingredients)
+        print(f"You successfully added this recipe: {recipe}")
 
     def see_all_recipes(self):
         recipes = self.connection.get_all_recipes()
