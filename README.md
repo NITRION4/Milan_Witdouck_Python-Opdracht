@@ -5,7 +5,7 @@ De structuur van mijn project omvat drie hoofdbestanden:
 * app.py voor de gebruikersinterface
 * database.py voor database-interactie
 * models.py voor de definitie van klassen. 
-Het config.ini-bestand wordt gebruikt voor de configuratie van de database-locatie. De repository bevat ook een requirements.txt-bestand met de benodigde packages voor het uitvoeren van het project.
+Het config.ini bestand wordt gebruikt voor de configuratie van de database-locatie. De repository bevat ook een requirements.txt bestand met de benodigde packages voor het uitvoeren van het project.
 
 
 English:
