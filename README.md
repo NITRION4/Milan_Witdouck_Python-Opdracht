@@ -22,8 +22,10 @@ Nederlands:
 
 Hoe het project uitvoeren?:
 1. Clone de repository
-2. Maak een virtuele omgeving aan (venv)
-3. Installeer de packages (requirements.txt)
+2. Maak een virtuele omgeving aan (venv):
+	python -m venv venv
+	source venv/bin/activate # Op windows: venv\Scripts\activate
+3. Installeer de packages (pip install -r requirements.txt)
 4. Configureer de database (Zie config_example.ini)
 5. Run het project (python app.py)
 
@@ -31,7 +33,9 @@ Hoe het project uitvoeren?:
 English:
 How to run the project?:
 1. Clone the repository
-2. Create a virtual environment (venv)
-3. Install the packages (requirements.txt)
+2. Create a virtual environment (venv):
+	python -m venv venv
+	source venv/bin/activate # On windows: venv\Scripts\activate
+3. Install the packages (pip install -r requirements.txt)
 4. Configure the database (See config_example.ini)
 5. Run the project (python app.py)
